@@ -1,0 +1,1303 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Porsche Sales Intelligence — Laércio Ricardo Edition</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --bg-base: #06090b;
+      --card-bg: #0d1215;
+      --card-bg-hover: #131a1e;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(212, 175, 55, 0.35);
+      --green-main: #046a38;
+      --green-accent: #10b981;
+      --gold-canary: #d4af37;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --shadow-exec: 0 16px 36px rgba(0, 0, 0, 0.55);
+      --shadow-glow: 0 0 24px rgba(4, 106, 56, 0.2);
+
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text-main);
+      font-family: var(--font-main);
+      background: var(--bg-base);
+      overflow-x: hidden;
+      padding-top: 70px;
+    }
+
+    /* Topo Fixado / Navbar Classy */
+    .top-navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(6, 9, 11, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 4%;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .crest-mini {
+      width: 32px; height: 32px;
+      display: grid; place-items: center;
+      border-radius: 8px;
+      color: #046a38;
+      font-weight: 900; font-size: 15px;
+      background: linear-gradient(145deg, #FFDF00, #D4AF37);
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .nav-title {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .nav-author {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      color: var(--gold-canary);
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    main {
+      width: min(1440px, 95%);
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    /* Novo Banner Hero Renovado */
+    .hero-container {
+      position: relative;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #090e11;
+      border: 1px solid var(--card-border);
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-exec);
+    }
+
+    .hero-bg-layer {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 80% 20%, rgba(4, 106, 56, 0.35) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(6, 9, 11, 0.7) 0%, rgba(6, 9, 11, 0.95) 100%),
+        var(--hero-bg, url("https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1700&q=80")) center/cover no-repeat;
+      transition: background 0.6s ease-in-out;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 42px 42px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .hero-text-side {
+      max-width: 650px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--gold-canary);
+      margin-bottom: 10px;
+    }
+
+    .hero-container h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 3.2vw, 44px);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .hero-container p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .hero-stats-badge {
+      background: rgba(13, 18, 21, 0.85);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      border-radius: 18px;
+      padding: 16px 24px;
+      display: flex;
+      gap: 24px;
+    }
+
+    .stat-item span {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .stat-item strong {
+      font-size: 18px;
+      color: var(--gold-canary);
+      font-weight: 800;
+    }
+
+    /* Slider de Showroom Integrado */
+    .showroom-section {
+      position: relative;
+      z-index: 2;
+      padding: 10px 42px 32px;
+    }
+
+    .slider-track-wrapper {
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      width: 100%;
+      cursor: grab;
+    }
+
+    .slider-track-wrapper::-webkit-scrollbar { display: none; }
+
+    .showroom-grid {
+      display: flex;
+      gap: 16px;
+      width: max-content;
+      user-select: none;
+    }
+
+    .showroom-card {
+      width: 240px;
+      background: rgba(13, 18, 21, 0.8);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(14px);
+      border-radius: 18px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .showroom-card:hover {
+      border-color: var(--card-border-hover);
+      transform: translateY(-4px);
+      background: var(--card-bg-hover);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .showroom-card.active {
+      border-color: var(--gold-canary);
+      background: rgba(16, 32, 24, 0.95);
+      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
+    }
+
+    .showroom-thumb {
+      height: 105px;
+      width: 100%;
+      object-fit: cover;
+      border-bottom: 1px solid var(--card-border);
+      pointer-events: none;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+
+    .showroom-card:hover .showroom-thumb, .showroom-card.active .showroom-thumb {
+      opacity: 1;
+    }
+
+    .showroom-info { padding: 12px 16px; }
+
+    .showroom-info span {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      color: var(--gold-canary);
+      font-weight: 700;
+    }
+
+    .showroom-info strong {
+      display: block;
+      font-size: 13px;
+      color: #fff;
+      margin: 2px 0;
+    }
+
+    .showroom-info small { color: var(--text-muted); font-size: 11px; }
+
+    .slider-btn {
+      position: absolute;
+      top: 55%;
+      transform: translateY(-50%);
+      background: rgba(9, 14, 17, 0.9);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      cursor: pointer;
+      z-index: 5;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .slider-btn:hover { background: var(--green-main); border-color: var(--green-main); color: #fff; }
+    .slider-prev { left: 14px; }
+    .slider-next { right: 14px; }
+
+    /* Filtros Executivos */
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(130px, 1fr)) auto;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .filter, .card {
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      background: var(--card-bg);
+      box-shadow: var(--shadow-exec);
+      transition: border-color 0.2s;
+    }
+
+    .filter:hover { border-color: rgba(255, 255, 255, 0.15); }
+
+    .filter { padding: 14px 18px; }
+    .card { padding: 24px; }
+
+    label, .kpi small, .eyebrow {
+      display: block;
+      color: var(--text-muted);
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    select {
+      width: 100%;
+      margin-top: 6px;
+      border: 0; outline: 0;
+      color: var(--text-main);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-main);
+    }
+
+    select option { background: #0d1215; color: #fff; }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 0 22px;
+      color: #ffffff;
+      background: var(--green-main);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(4, 106, 56, 0.3);
+      font-family: var(--font-main);
+    }
+
+    button:hover { background: #03522b; transform: translateY(-1px); }
+
+    /* Layout Grids */
+    .grid { display: grid; gap: 20px; }
+    .kpis { grid-template-columns: repeat(4, 1fr); }
+    .main-grid { grid-template-columns: 1.1fr .9fr; margin-top: 20px; }
+
+    .kpi { border-top: 3px solid var(--green-main); position: relative; overflow: hidden; }
+    .kpi:nth-child(2) { border-top-color: var(--gold-canary); }
+    .kpi:nth-child(3) { border-top-color: #3b82f6; }
+    .kpi:nth-child(4) { border-top-color: var(--green-accent); }
+
+    .kpi strong {
+      display: block;
+      margin: 10px 0 4px;
+      font-size: 26px;
+      letter-spacing: -.02em;
+      color: #fff;
+    }
+
+    .sub, .hint { color: var(--text-muted); font-size: 12px; }
+    .head { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+    h2 { margin: 2px 0 0; font-size: 18px; letter-spacing: -.02em; color: #fff; }
+    .eyebrow { color: var(--green-accent); }
+    .chart { height: 320px; position: relative; }
+
+    /* Tabela Executiva Refinada */
+    .table-card { margin-top: 20px; }
+    .table-wrap {
+      overflow-x: auto;
+      max-height: 440px;
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+      table-layout: fixed;
+    }
+
+    table.data-table thead {
+      display: table-header-group !important;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #141c21;
+    }
+
+    table.data-table thead tr { display: table-row !important; }
+
+    table.data-table th {
+      padding: 14px 16px;
+      color: var(--text-muted);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      border-bottom: 1px solid var(--card-border);
+      white-space: nowrap;
+    }
+
+    table.data-table th:nth-child(1) { width: 12%; }
+    table.data-table th:nth-child(2) { width: 22%; }
+    table.data-table th:nth-child(3) { width: 10%; }
+    table.data-table th:nth-child(4) { width: 20%; }
+    table.data-table th:nth-child(5) { width: 18%; }
+    table.data-table th:nth-child(6) { width: 18%; }
+    table.data-table th:nth-child(7) { width: 12%; }
+
+    table.data-table tbody { display: table-row-group !important; }
+
+    table.data-table tbody tr {
+      display: table-row !important;
+      border-bottom: 1px solid var(--card-border);
+      transition: background 0.15s ease;
+    }
+
+    table.data-table tbody tr:hover { background: rgba(255, 255, 255, 0.035); }
+
+    table.data-table td {
+      padding: 14px 16px;
+      color: var(--text-main);
+      vertical-align: middle;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+
+    .status-pill.entregue { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-pill.pendente { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .status-pill.transito { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .status-pill.cancelado { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    .insights { display: grid; gap: 12px; }
+    .insight {
+      display: flex;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.012);
+      transition: border-color 0.2s;
+    }
+    .insight:hover { border-color: rgba(255, 255, 255, 0.1); }
+
+    .dot {
+      width: 8px; height: 8px;
+      margin-top: 6px;
+      border-radius: 50%;
+      background: var(--gold-canary);
+      flex-shrink: 0;
+      box-shadow: 0 0 8px var(--gold-canary);
+    }
+
+    /* Novo Rodapé Executivo em Colunas */
+    footer.main-footer {
+      margin-top: 40px;
+      padding: 32px 36px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 24px;
+      align-items: center;
+      box-shadow: var(--shadow-exec);
+    }
+
+    .footer-col-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .footer-sub {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin: 0;
+    }
+
+    .footer-col-status {
+      text-align: center;
+      border-left: 1px solid var(--card-border);
+      border-right: 1px solid var(--card-border);
+      padding: 0 16px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--green-accent);
+      background: rgba(16, 185, 129, 0.1);
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      font-weight: 600;
+    }
+
+    .status-pulse {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green-accent);
+      box-shadow: 0 0 8px var(--green-accent);
+    }
+
+    .footer-col-links {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .footer-col-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 12px;
+      transition: color 0.2s;
+    }
+
+    .footer-col-links a:hover { color: var(--gold-canary); }
+
+    .version-tag {
+      font-size: 11px;
+      background: rgba(255,255,255,0.05);
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+    }
+
+    @media(max-width: 1000px) {
+      .filters { grid-template-columns: repeat(2, 1fr); }
+      .kpis, .main-grid { grid-template-columns: 1fr 1fr; }
+      button { grid-column: span 2; height: 46px; }
+      footer.main-footer { grid-template-columns: 1fr; text-align: center; }
+      .footer-col-status { border: 0; padding: 12px 0; }
+      .footer-col-links { justify-content: center; }
+    }
+
+    @media(max-width: 700px) {
+      main { padding: 16px 0; }
+      .filters, .kpis, .main-grid { grid-template-columns: 1fr; }
+      button { grid-column: auto; }
+      .hero-content { padding: 24px; }
+      .showroom-section { padding: 10px 24px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topo Fixado Executivo -->
+  <header class="top-navbar">
+    <div class="nav-brand">
+      <div class="crest-mini">P</div>
+      <span class="nav-title">Porsche Sales Intelligence</span>
+    </div>
+    <div class="nav-author">
+      <span>🇧🇷</span>
+      <span>Laércio Ricardo — Analytics</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Banner Hero & Showroom Renovados -->
+    <section class="hero-container" id="heroBanner">
+      <div class="hero-bg-layer"></div>
+      
+      <div class="hero-content">
+        <div class="hero-text-side">
+          <div class="hero-tag">
+            <span>Executive Dashboard</span>
+            <span>•</span>
+            <span>BRL (R$)</span>
+          </div>
+          <h1 id="heroTitle">Porsche 911 Turbo S</h1>
+          <p id="heroDesc">Análise executiva de desempenho de vendas por modelo, ano e localidade em Reais (R$).</p>
+        </div>
+
+        <div class="hero-stats-badge">
+          <div class="stat-item">
+            <span>Moeda Base</span>
+            <strong>BRL (R$)</strong>
+          </div>
+          <div class="stat-item">
+            <span>Cotação Usada</span>
+            <strong>R$ 5,20</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carrossel de Modelos -->
+      <div class="showroom-section">
+        <button class="slider-btn slider-prev" onclick="scrollSlider(-1)">❮</button>
+        <button class="slider-btn slider-next" onclick="scrollSlider(1)">❯</button>
+        <div class="slider-track-wrapper" id="sliderWrapper">
+          <div class="showroom-grid" id="carouselTrack">
+            
+            <div class="showroom-card active" onclick="switchShowroomModel('911 Turbo S', 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1700&q=80', 'Porsche 911 Turbo S', '650 cv • 0-100 em 2.7s')">
+              <img src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=600&q=80" class="showroom-thumb" alt="911 Turbo S">
+              <div class="showroom-info">
+                <span>Flagship</span>
+                <strong>911 Turbo S</strong>
+                <small>R$ 1.2M+ Médio</small>
+              </div>
+            </div>
+
+            <div class="showroom-card" onclick="switchShowroomModel('Cayenne Coupe', 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1700&q=80', 'Porsche Cayenne Coupe', 'SUV de Alta Performance')">
+              <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80" class="showroom-thumb" alt="Cayenne Coupe">
+              <div class="showroom-info">
+                <span>SUV Sport</span>
+                <strong>Cayenne Coupe</strong>
+                <small>Líder em Volume</small>
+              </div>
+            </div>
+
+            <div class="showroom-card" onclick="switchShowroomModel('Taycan Turbo S', 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1700&q=80', 'Porsche Taycan 100% Elétrico', 'Inovação e Eletromobilidade')">
+              <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=600&q=80" class="showroom-thumb" alt="Taycan Turbo S">
+              <div class="showroom-info">
+                <span>Elétrico</span>
+                <strong>Taycan Turbo S</strong>
+                <small>Tecnologia & IA</small>
+              </div>
+            </div>
+
+            <div class="showroom-card" onclick="switchShowroomModel('718 Cayman GT4 RS', 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1700&q=80', 'Porsche 718 Cayman GT4 RS', 'Pura Adrenalina em Pista')">
+              <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=600&q=80" class="showroom-thumb" alt="718 Cayman GT4 RS">
+              <div class="showroom-info">
+                <span>Track Focus</span>
+                <strong>718 Cayman GT4 RS</strong>
+                <small>Alta Rotação</small>
+              </div>
+            </div>
+
+            <div class="showroom-card" onclick="switchShowroomModel('Panamera Turbo S', 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1700&q=80', 'Porsche Panamera Turbo S', 'Luxo & Potência Executiva')">
+              <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80" class="showroom-thumb" alt="Panamera Turbo S">
+              <div class="showroom-info">
+                <span>Executive</span>
+                <strong>Panamera Turbo S</strong>
+                <small>Luxo & Conforto</small>
+              </div>
+            </div>
+
+            <div class="showroom-card" onclick="switchShowroomModel('Macan GTS', 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=1700&q=80', 'Porsche Macan GTS', 'Esportividade Compacta')">
+              <img src="https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=600&q=80" class="showroom-thumb" alt="Macan GTS">
+              <div class="showroom-info">
+                <span>Compact SUV</span>
+                <strong>Macan GTS</strong>
+                <small>Versatilidade</small>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtros -->
+    <section class="filters" aria-label="Filtros do dashboard">
+      <div class="filter"><label for="modelFilter">Modelo</label><select id="modelFilter"></select></div>
+      <div class="filter"><label for="yearFilter">Ano</label><select id="yearFilter"></select></div>
+      <div class="filter"><label for="cityFilter">Cidade</label><select id="cityFilter"></select></div>
+      <div class="filter"><label for="stateFilter">Estado</label><select id="stateFilter"></select></div>
+      <div class="filter"><label for="payFilter">Pagamento</label><select id="payFilter"></select></div>
+      <button id="clearFilters" type="button">Limpar Filtros</button>
+    </section>
+
+    <!-- KPIs -->
+    <section class="grid kpis">
+      <article class="card kpi">
+        <small>Vendas Filtradas</small>
+        <strong id="salesKpi">0</strong>
+        <div class="sub" id="cityKpi">—</div>
+      </article>
+      <article class="card kpi">
+        <small>Receita Total (R$)</small>
+        <strong id="revenueKpi">R$ 0</strong>
+        <div class="sub" id="ticketKpi">—</div>
+      </article>
+      <article class="card kpi">
+        <small>Modelo Líder</small>
+        <strong id="modelKpi">—</strong>
+        <div class="sub" id="modelShareKpi">—</div>
+      </article>
+      <article class="card kpi">
+        <small>Ano Dominante</small>
+        <strong id="yearKpi">—</strong>
+        <div class="sub" id="yearShareKpi">—</div>
+      </article>
+    </section>
+
+    <!-- Gráficos -->
+    <section class="grid main-grid">
+      <article class="card">
+        <div class="head">
+          <div>
+            <div class="eyebrow">Análise de Modelos</div>
+            <h2>Principais modelos vendidos</h2>
+          </div>
+          <div class="hint">Volume com valores numéricos diretos.</div>
+        </div>
+        <div class="chart"><canvas id="modelChart"></canvas></div>
+      </article>
+
+      <article class="card">
+        <div class="head">
+          <div>
+            <div class="eyebrow">Análise Temporal</div>
+            <h2>Ano do modelo com maior saída</h2>
+          </div>
+          <div class="hint">Distribuição por Ano com fatia numérica.</div>
+        </div>
+        <div class="chart"><canvas id="yearChart"></canvas></div>
+      </article>
+    </section>
+
+    <section class="grid main-grid">
+      <article class="card">
+        <div class="head">
+          <div>
+            <div class="eyebrow">Geografia de Vendas</div>
+            <h2>Vendas e Receita por Estado (UF)</h2>
+          </div>
+          <div class="hint">Unidades e receita por UF.</div>
+        </div>
+        <div class="chart"><canvas id="stateChart"></canvas></div>
+      </article>
+
+      <aside class="card">
+        <div class="head">
+          <div>
+            <div class="eyebrow">Resumo Inteligente</div>
+            <h2>Leitura Executiva Automática</h2>
+          </div>
+        </div>
+        <div class="insights" id="insights"></div>
+      </aside>
+    </section>
+
+    <!-- Tabela -->
+    <section class="card table-card">
+      <div class="head">
+        <div>
+          <div class="eyebrow">Detalhamento Operacional</div>
+          <h2>Últimas vendas no recorte</h2>
+        </div>
+        <div class="hint">Tabela ordenada com conferência de preço em R$, status e forma de pagamento.</div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="salesTable">
+          <!-- Gerado via JS -->
+        </table>
+      </div>
+    </section>
+
+    <!-- Novo Rodapé Executivo em Colunas -->
+    <footer class="main-footer">
+      <div class="footer-col-brand">
+        <div class="footer-logo">
+          <div class="crest-mini">P</div>
+          <span>Porsche Sales Intelligence</span>
+        </div>
+        <p class="footer-sub">Desenvolvido por Laércio Ricardo • Software & Analytics</p>
+      </div>
+
+      <div class="footer-col-status">
+        <div class="status-badge">
+          <span class="status-pulse"></span>
+          <span>Base de Dados Sincronizada (2026)</span>
+        </div>
+      </div>
+
+      <div class="footer-col-links">
+        <a href="https://github.com/Laercio-Ricardo" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+        <span class="version-tag">v2.4 Pro</span>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    var USD_TO_BRL = 5.20;
+    var updateDashboardGlobal = null;
+
+    function scrollSlider(direction) {
+      var wrapper = document.getElementById("sliderWrapper");
+      wrapper.scrollBy({ left: 280 * direction, behavior: 'smooth' });
+    }
+
+    (function() {
+      var slider = document.getElementById("sliderWrapper");
+      var isDown = false, startX, scrollLeft;
+
+      slider.addEventListener('mousedown', function(e) {
+        isDown = true;
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+      });
+      slider.addEventListener('mouseleave', function() { isDown = false; });
+      slider.addEventListener('mouseup', function() { isDown = false; });
+      slider.addEventListener('mousemove', function(e) {
+        if (!isDown) return;
+        e.preventDefault();
+        var x = e.pageX - slider.offsetLeft;
+        slider.scrollLeft = scrollLeft - (x - startX) * 1.5;
+      });
+    })();
+
+    function switchShowroomModel(exactModelName, bgUrl, title, desc) {
+      var hero = document.getElementById("heroBanner");
+      hero.style.setProperty("--hero-bg", 'url("' + bgUrl + '")');
+      document.getElementById("heroTitle").textContent = title;
+      document.getElementById("heroDesc").textContent = desc + " • Inteligência comercial em Reais (R$).";
+
+      var cards = document.querySelectorAll(".showroom-card");
+      cards.forEach(function(c){ c.classList.remove("active"); });
+      if (event && event.currentTarget) {
+        event.currentTarget.closest(".showroom-card").classList.add("active");
+      }
+
+      var modelSelect = document.getElementById("modelFilter");
+      if (modelSelect) {
+        modelSelect.value = exactModelName;
+        if (updateDashboardGlobal) updateDashboardGlobal();
+      }
+    }
+
+    (function(){
+      "use strict";
+
+      var rawRows = [
+        ["","718 Cayman",2022,"São Paulo","SP","Cartão de Crédito",79500*USD_TO_BRL,"Entregue"],
+        ["2024-03-14","911 Turbo S",2024,"Rio de Janeiro","RJ","PIX / Transferência",235000*USD_TO_BRL,"Entregue"],
+        ["2024-04-18","Cayenne Coupe",2023,"Curitiba","PR","Financiamento",112750*USD_TO_BRL,"Em Trânsito"],
+        ["","Macan S",2021,"Belo Horizonte","MG","À Vista",68900*USD_TO_BRL,"Pendente"],
+        ["2024-05-22","Taycan 4S",2024,"Teresina","PI","PIX / Transferência",121000*USD_TO_BRL,"Entregue"],
+        ["2024-08-06","Panamera 4",2023,"Porto Alegre","RS","Cartão de Crédito",104500*USD_TO_BRL,"Cancelado"],
+        ["2024-07-11","911 Carrera S",2020,"Brasília","DF","Consórcio / Leasing",96300*USD_TO_BRL,"Entregue"],
+        ["","Cayenne E-Hybrid",2022,"Recife","PE","PIX / Transferência",89750*USD_TO_BRL,"Pendente"],
+        ["2024-08-19","718 Boxster",2021,"Salvador","BA","Cartão de Crédito",73500*USD_TO_BRL,"Enviado"],
+        ["2024-09-02","Macan GTS",2024,"Fortaleza","CE","Financiamento",95000*USD_TO_BRL,"Em Trânsito"],
+        ["2024-09-17","Taycan Turbo",2023,"Goiânia","GO","PIX / Transferência",153200.5*USD_TO_BRL,"Entregue"],
+        ["","911 GT3",2024,"Campinas","SP","PIX / Transferência",241000*USD_TO_BRL,"Pendente"],
+        ["2024-05-11","Panamera Turbo S",2022,"Florianópolis","SC","À Vista",132000*USD_TO_BRL,"Entregue"],
+        ["2024-12-12","Cayenne Turbo GT",2024,"Manaus","AM","Criptomoeda",188000*USD_TO_BRL,"Aguardando Retirada"],
+        ["2024-12-25","911 Carrera Cabriolet",2023,"São Luís","MA","Cartão de Crédito",127800*USD_TO_BRL,"Entregue"],
+        ["2025-01-06","Macan",2021,"Belém","PA","PIX / Transferência",58900*USD_TO_BRL,"Pendente"],
+        ["","718 Spyder RS",2024,"Vitória","ES","Financiamento",164000*USD_TO_BRL,"Em Trânsito"],
+        ["2025-02-14","Taycan Cross Turismo",2023,"Natal","RN","PIX / Transferência",118500*USD_TO_BRL,"Entregue"],
+        ["","Cayenne S",2022,"Maceió","AL","Cartão de Crédito",91300*USD_TO_BRL,"Pendente"],
+        ["2025-03-21","911 Targa 4S",2024,"Campo Grande","MS","Consórcio / Leasing",158750*USD_TO_BRL,"Entregue"],
+        ["2025-03-28","Panamera",2020,"Cuiabá","MT","PIX / Transferência",72000*USD_TO_BRL,"Cancelado"],
+        ["2025-04-09","Macan Electric",2025,"João Pessoa","PB","PIX / Transferência",86500*USD_TO_BRL,"Entregue"],
+        ["","911 Dakar",2024,"Teresina","PI","À Vista",270000*USD_TO_BRL,"Aguardando Retirada"],
+        ["2025-05-12","Taycan GTS",2023,"Aracaju","SE","Financiamento",139000*USD_TO_BRL,"Em Trânsito"],
+        ["2025-06-18","Cayenne",2021,"Londrina","PR","Cartão de Crédito",76800*USD_TO_BRL,"Entregue"],
+        ["","718 Cayman GT4 RS",2024,"Niterói","RJ","PIX / Transferência",173600*USD_TO_BRL,"Pendente"],
+        ["2025-07-07","911 Carrera GTS",2022,"Ribeirão Preto","SP","À Vista",119900*USD_TO_BRL,"Entregue"],
+        ["2025-07-22","Panamera 4 E-Hybrid",2023,"Caxias do Sul","RS","Consórcio / Leasing",109250*USD_TO_BRL,"Em Trânsito"],
+        ["2025-08-14","Macan T",2022,"Joinville","SC","PIX / Transferência",82000*USD_TO_BRL,"Entregue"],
+        ["2025-09-01","Taycan Turbo S",2025,"São Paulo","SP","Criptomoeda",214000*USD_TO_BRL,"Pendente"],
+        ["","911 Carrera",2024,"Uberlândia","MG","Cartão de Crédito",124500*USD_TO_BRL,"Entregue"],
+        ["2025-09-18","Cayenne S",2023,"São José dos Campos","SP","PIX / Transferência",98200*USD_TO_BRL,"Pendente"],
+        ["2025-10-04","Macan",2022,"Santos","SP","Financiamento",67500*USD_TO_BRL,"Entregue"],
+        ["2025-10-12","Taycan",2025,"Sorocaba","SP","PIX / Transferência",116900*USD_TO_BRL,"Em Trânsito"],
+        ["2025-10-29","Panamera 4S",2024,"Maringá","PR","À Vista",112000*USD_TO_BRL,"Entregue"],
+        ["2025-02-11","718 Boxster",2021,"Pelotas","RS","Cartão de Crédito",74000*USD_TO_BRL,"Cancelado"],
+        ["2025-11-16","911 Turbo",2024,"Teresina","PI","PIX / Transferência",198300*USD_TO_BRL,"Aguardando Retirada"],
+        ["","Cayenne Coupe",2023,"Feira de Santana","BA","PIX / Transferência",103750*USD_TO_BRL,"Pendente"],
+        ["","Macan GTS",2024,"Anápolis","GO","Financiamento",93600*USD_TO_BRL,"Enviado"],
+        ["2025-12-07","Taycan 4S",2025,"Bauru","SP","PIX / Transferência",129000*USD_TO_BRL,"Em Trânsito"],
+        ["2025-12-22","Panamera Turbo",2022,"Vitória","ES","Cartão de Crédito",136000*USD_TO_BRL,"Entregue"],
+        ["","911 GT3 RS",2024,"São Paulo","SP","PIX / Transferência",286500*USD_TO_BRL,"Pendente"],
+        ["2026-01-08","Cayenne E-Hybrid",2023,"Rio de Janeiro","RJ","Consórcio / Leasing",92800*USD_TO_BRL,"Entregue"],
+        ["2026-01-15","Macan T",2022,"Curitiba","PR","À Vista",72400*USD_TO_BRL,"Aguardando Retirada"],
+        ["2026-01-28","Taycan Turbo",2025,"Belo Horizonte","MG","Criptomoeda",158500*USD_TO_BRL,"Entregue"],
+        ["2026-02-03","718 Cayman",2021,"Brasília","DF","PIX / Transferência",69900*USD_TO_BRL,"Pendente"],
+        ["","911 Targa 4",2024,"Porto Alegre","RS","Financiamento",141250*USD_TO_BRL,"Em Trânsito"],
+        ["2026-02-19","Panamera",2020,"Recife","PE","PIX / Transferência",71500*USD_TO_BRL,"Entregue"],
+        ["2026-02-25","Cayenne Turbo",2023,"Salvador","BA","Cartão de Crédito",146800*USD_TO_BRL,"Pendente"],
+        ["2026-03-01","Macan Electric",2025,"Fortaleza","CE","Consórcio / Leasing",89700*USD_TO_BRL,"Entregue"],
+        ["2026-03-14","911 Carrera S",2022,"Goiânia","GO","PIX / Transferência",104600*USD_TO_BRL,"Cancelado"],
+        ["","Taycan GTS",2024,"Florianópolis","SC","PIX / Transferência",142000*USD_TO_BRL,"Entregue"],
+        ["2026-04-08","Cayenne",2021,"Campinas","SP","À Vista",78400*USD_TO_BRL,"Pendente"],
+        ["","718 Spyder RS",2025,"São Luís","MA","Financiamento",169000*USD_TO_BRL,"Em Trânsito"],
+        ["2026-04-21","911 Dakar",2024,"São Paulo","SP","Cartão de Crédito",268900*USD_TO_BRL,"Entregue"],
+        ["2026-04-29","Panamera 4",2023,"Teresina","PI","PIX / Transferência",101300*USD_TO_BRL,"Pendente"],
+        ["2026-05-05","Macan S",2021,"Rio de Janeiro","RJ","À Vista",66750*USD_TO_BRL,"Entregue"],
+        ["2026-05-14","Taycan Cross Turismo",2024,"Curitiba","PR","Consórcio / Leasing",127900*USD_TO_BRL,"Em Trânsito"],
+        ["2026-05-23","Cayenne Turbo GT",2025,"Belo Horizonte","MG","PIX / Transferência",200000*USD_TO_BRL,"Entregue"],
+        ["2026-06-02","911 Carrera Cabriolet",2023,"Brasília","DF","Criptomoeda",132000*USD_TO_BRL,"Pendente"],
+        ["2026-06-15","718 Cayman GT4 RS",2024,"Porto Alegre","RS","Cartão de Crédito",176400*USD_TO_BRL,"Entregue"],
+        ["","Panamera 4 E-Hybrid",2022,"Recife","PE","PIX / Transferência",108500*USD_TO_BRL,"Cancelado"],
+        ["2026-07-07","Macan",2021,"Salvador","BA","Financiamento",59000*USD_TO_BRL,"Aguardando Retirada"],
+        ["2026-07-20","Taycan Turbo S",2025,"Fortaleza","CE","PIX / Transferência",218000*USD_TO_BRL,"Pendente"],
+        ["","Cayenne S",2024,"Goiânia","GO","Cartão de Crédito",99950*USD_TO_BRL,"Entregue"],
+        ["2026-04-08","911 Carrera GTS",2024,"Florianópolis","SC","Cartão de Crédito",121750*USD_TO_BRL,"Entregue"],
+        ["2026-08-18","718 Boxster GTS",2023,"Manaus","AM","Consórcio / Leasing",91500*USD_TO_BRL,"Enviado"],
+        ["2026-08-31","Panamera Turbo S",2022,"Vitória","ES","PIX / Transferência",134000*USD_TO_BRL,"Em Trânsito"],
+        ["2026-09-09","Macan GTS",2024,"Natal","RN","PIX / Transferência",96800*USD_TO_BRL,"Entregue"],
+        ["2026-09-17","Taycan 4S",2025,"Maceió","AL","PIX / Transferência",131600*USD_TO_BRL,"Pendente"],
+        ["2026-09-28","Cayenne E-Hybrid",2023,"Campo Grande","MS","À Vista",94300*USD_TO_BRL,"Entregue"],
+        ["2026-10-06","911 Turbo S",2025,"Cuiabá","MT","Criptomoeda",242000*USD_TO_BRL,"Aguardando Retirada"],
+        ["2026-10-16","718 Cayman S",2022,"João Pessoa","PB","Cartão de Crédito",82750*USD_TO_BRL,"Cancelado"],
+        ["2026-10-29","Macan Electric",2026,"Teresina","PI","PIX / Transferência",91300*USD_TO_BRL,"Entregue"],
+        ["2026-11-03","Panamera",2021,"Aracaju","SE","Financiamento",79900*USD_TO_BRL,"Pendente"],
+        ["","Cayenne Coupe",2024,"Londrina","PR","PIX / Transferência",111000*USD_TO_BRL,"Em Trânsito"],
+        ["2026-12-11","911 Targa 4S",2023,"Niterói","RJ","À Vista",156500*USD_TO_BRL,"Entregue"],
+        ["2026-12-24","Taycan",2025,"Ribeirão Preto","SP","Consórcio / Leasing",119900*USD_TO_BRL,"Pendente"],
+        ["","Macan T",2022,"Caxias do Sul","RS","PIX / Transferência",73200*USD_TO_BRL,"Entregue"],
+        ["2026-12-28","911 GT3",2024,"Joinville","SC","PIX / Transferência",224000*USD_TO_BRL,"Aguardando Retirada"],
+        ["2027-01-15","911 Carrera",2024,"Uberlândia","MG","Cartão de Crédito",126900*USD_TO_BRL,"Entregue"],
+        ["2027-01-29","Cayenne",2023,"São José dos Campos","SP","PIX / Transferência",84500*USD_TO_BRL,"Pendente"],
+        ["2027-02-11","Macan S",2022,"Santos","SP","Financiamento",69800*USD_TO_BRL,"Entregue"],
+        ["","Taycan 4S",2025,"Sorocaba","SP","PIX / Transferência",132700*USD_TO_BRL,"Em Trânsito"],
+        ["2027-03-05","Panamera",2021,"Maringá","PR","À Vista",81000*USD_TO_BRL,"Entregue"],
+        ["2027-03-18","718 Cayman",2023,"São Paulo","SP","Cartão de Crédito",78900*USD_TO_BRL,"Cancelado"],
+        ["2027-04-02","911 Turbo S",2026,"Rio de Janeiro","RJ","PIX / Transferência",249300*USD_TO_BRL,"Aguardando Retirada"],
+        ["","Cayenne Coupe",2024,"Curitiba","PR","PIX / Transferência",108750*USD_TO_BRL,"Pendente"],
+        ["","Macan Electric",2026,"Belo Horizonte","MG","Financiamento",92600*USD_TO_BRL,"Enviado"],
+        ["2027-05-12","Taycan Turbo",2025,"Brasília","DF","PIX / Transferência",164000*USD_TO_BRL,"Em Trânsito"],
+        ["2027-05-27","Panamera 4S",2024,"Porto Alegre","RS","Cartão de Crédito",119000*USD_TO_BRL,"Entregue"],
+        ["","911 GT3",2026,"Recife","PE","PIX / Transferência",232500*USD_TO_BRL,"Pendente"],
+        ["2027-06-18","Cayenne E-Hybrid",2023,"Salvador","BA","Consórcio / Leasing",96800*USD_TO_BRL,"Entregue"],
+        ["2027-07-03","Macan T",2022,"Fortaleza","CE","À Vista",74400*USD_TO_BRL,"Aguardando Retirada"],
+        ["2027-07-22","Taycan GTS",2025,"Goiânia","GO","Criptomoeda",148500*USD_TO_BRL,"Entregue"],
+        ["2027-08-08","718 Boxster",2021,"Florianópolis","SC","PIX / Transferência",71900*USD_TO_BRL,"Pendente"],
+        ["","911 Targa 4",2024,"Campinas","SP","Financiamento",143250*USD_TO_BRL,"Em Trânsito"],
+        ["2027-09-19","Panamera Turbo",2020,"Teresina","PI","PIX / Transferência",137500*USD_TO_BRL,"Entregue"],
+        ["2027-09-25","Cayenne Turbo GT",2025,"São Paulo","SP","Cartão de Crédito",204800*USD_TO_BRL,"Pendente"],
+        ["2027-10-01","911 Dakar",2024,"Rio de Janeiro","RJ","Consórcio / Leasing",271700*USD_TO_BRL,"Entregue"]
+      ];
+
+      var sales = rawRows.map(function(r, i){
+        return {
+          id: i + 1,
+          date: r[0],
+          model: r[1],
+          year: r[2],
+          city: r[3],
+          state: r[4],
+          pay: r[5],
+          price: Number(r[6]) || 0,
+          status: r[7]
+        };
+      });
+
+      var modelChartInstance = null, yearChartInstance = null, stateChartInstance = null;
+      var palette = ["#046A38", "#D4AF37", "#3b82f6", "#10b981", "#f59e0b", "#6366f1", "#ec4899", "#14b8a6"];
+
+      function requireEl(id) {
+        var e = document.getElementById(id);
+        if (!e) throw new Error("Elemento não encontrado: #" + id);
+        return e;
+      }
+
+      function escapeHtml(v) {
+        return String(v == null ? "" : v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      }
+
+      function formatMoneyBRL(v) {
+        return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(v || 0);
+      }
+
+      function formatPercent(v) { return Math.round(v) + "%"; }
+
+      function countBy(rows, key) {
+        var c = {};
+        rows.forEach(function(r){
+          var l = r[key] == null || r[key] === "" ? "—" : String(r[key]);
+          c[l] = (c[l] || 0) + 1;
+        });
+        return c;
+      }
+
+      function topEntries(counts, limit) {
+        return Object.keys(counts).map(function(k){ return [k, counts[k]]; })
+          .sort(function(a, b){ return b[1] - a[1]; })
+          .slice(0, limit || 1);
+      }
+
+      function topValue(rows, key) { return topEntries(countBy(rows, key), 1)[0] || ["—", 0]; }
+
+      function uniqueSortedValues(key) {
+        var seen = {}, values = [];
+        sales.forEach(function(r){
+          var v = r[key];
+          if (v && !seen[v]) { seen[v] = true; values.push(v); }
+        });
+        return values.sort();
+      }
+
+      function populateSelect(selectId, key) {
+        var select = requireEl(selectId);
+        var html = '<option value="">Todos</option>';
+        uniqueSortedValues(key).forEach(function(v){
+          html += '<option value="' + escapeHtml(v) + '">' + escapeHtml(v) + '</option>';
+        });
+        select.innerHTML = html;
+      }
+
+      function getFilteredRows() {
+        var m = requireEl("modelFilter").value,
+            y = requireEl("yearFilter").value,
+            c = requireEl("cityFilter").value,
+            s = requireEl("stateFilter").value,
+            p = requireEl("payFilter").value;
+
+        return sales.filter(function(r){
+          return (!m || r.model === m) &&
+                 (!y || String(r.year) === y) &&
+                 (!c || r.city === c) &&
+                 (!s || r.state === s) &&
+                 (!p || r.pay === p);
+        });
+      }
+
+      var exactValuesPlugin = {
+        id: 'exactValuesPlugin',
+        afterDatasetsDraw: function(chart) {
+          var ctx = chart.ctx;
+          chart.data.datasets.forEach(function(dataset, datasetIndex) {
+            var meta = chart.getDatasetMeta(datasetIndex);
+            if (!meta.hidden) {
+              meta.data.forEach(function(element, index) {
+                var dataVal = dataset.data[index];
+                if (dataVal !== null && dataVal !== undefined && dataVal !== 0) {
+                  ctx.fillStyle = '#f8fafc';
+                  ctx.font = 'bold 11px "Plus Jakarta Sans", sans-serif';
+                  ctx.textAlign = 'center';
+                  ctx.textBaseline = 'middle';
+                  
+                  var position = element.tooltipPosition();
+                  var text = dataVal >= 1000000 ? "R$ " + (dataVal/1000000).toFixed(1) + "M" : dataVal.toLocaleString('pt-BR');
+                  
+                  if (chart.config.type === 'bar') {
+                    if (chart.options.indexAxis === 'y') {
+                      ctx.textAlign = 'left';
+                      ctx.fillText(" " + text, element.x + 4, element.y);
+                    } else {
+                      ctx.fillText(text, element.x, element.y - 8);
+                    }
+                  } else if (chart.config.type === 'doughnut') {
+                    ctx.fillText(text, position.x, position.y);
+                  }
+                }
+              });
+            }
+          });
+        }
+      };
+
+      function makeChartConfig(labels, values, horizontal) {
+        return {
+          type: horizontal ? "bar" : "doughnut",
+          data: {
+            labels: labels,
+            datasets: [{
+              data: values,
+              borderWidth: 0,
+              backgroundColor: labels.map(function(_, i){ return palette[i % palette.length]; })
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: horizontal ? "y" : "x",
+            plugins: {
+              legend: { display: !horizontal, position: "bottom", labels: { color: "#94a3b8", font: { family: 'Plus Jakarta Sans' } } },
+              tooltip: { backgroundColor: "#046A38" }
+            },
+            scales: horizontal ? { x: { ticks: { precision: 0, color: "#94a3b8" }, grid: { color: "rgba(255,255,255,0.04)" } }, y: { ticks: { color: "#94a3b8" }, grid: { display: false } } } : {}
+          },
+          plugins: [exactValuesPlugin]
+        };
+      }
+
+      function getStateSeries(rows) {
+        var grouped = {};
+        rows.forEach(function(r){
+          var st = r.state || "—";
+          if (!grouped[st]) grouped[st] = { units: 0, revenue: 0 };
+          grouped[st].units += 1;
+          grouped[st].revenue += r.price;
+        });
+        var entries = Object.keys(grouped).map(function(st){
+          return { state: st, units: grouped[st].units, revenue: grouped[st].revenue };
+        }).sort(function(a, b){ return b.units - a.units; }).slice(0, 10);
+
+        return {
+          labels: entries.map(function(x){ return x.state; }),
+          units: entries.map(function(x){ return x.units; }),
+          revenue: entries.map(function(x){ return x.revenue; })
+        };
+      }
+
+      function renderStateChart(rows) {
+        var s = getStateSeries(rows);
+        if (stateChartInstance) stateChartInstance.destroy();
+
+        stateChartInstance = new Chart(requireEl("stateChart"), {
+          type: "bar",
+          data: {
+            labels: s.labels,
+            datasets: [
+              { label: "Vendas (Unidades)", data: s.units, backgroundColor: "#046A38", borderRadius: 4, yAxisID: "y" },
+              { label: "Receita (R$)", data: s.revenue, backgroundColor: "#D4AF37", borderRadius: 4, yAxisID: "y1" }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: "bottom", labels: { color: "#94a3b8", font: { family: 'Plus Jakarta Sans' } } },
+              tooltip: {
+                callbacks: {
+                  label: function(ctx) {
+                    return ctx.dataset.label === "Receita (R$)" ?
+                      "Receita: " + formatMoneyBRL(ctx.parsed.y) : "Vendas: " + ctx.parsed.y + " un.";
+                  }
+                }
+              }
+            },
+            scales: {
+              y: { beginAtZero: true, position: "left", ticks: { color: "#94a3b8" }, grid: { color: "rgba(255,255,255,0.04)" }, title: { display: true, text: "Unidades", color: "#94a3b8" } },
+              y1: { beginAtZero: true, position: "right", grid: { drawOnChartArea: false }, ticks: { color: "#94a3b8", callback: function(v){ return "R$ " + (v/1000000).toFixed(1) + "M"; } } }
+            }
+          },
+          plugins: [exactValuesPlugin]
+        });
+      }
+
+      function renderCharts(rows) {
+        var tm = topEntries(countBy(rows, "model"), 7),
+            ty = topEntries(countBy(rows, "year"), 6);
+
+        if (modelChartInstance) modelChartInstance.destroy();
+        if (yearChartInstance) yearChartInstance.destroy();
+
+        modelChartInstance = new Chart(requireEl("modelChart"), makeChartConfig(tm.map(function(x){ return x[0]; }), tm.map(function(x){ return x[1]; }), true));
+        yearChartInstance = new Chart(requireEl("yearChart"), makeChartConfig(ty.map(function(x){ return x[0]; }), ty.map(function(x){ return x[1]; }), false));
+        renderStateChart(rows);
+      }
+
+      function renderKpis(rows) {
+        var revenue = rows.reduce(function(s, r){ return s + r.price; }, 0),
+            modelTop = topValue(rows, "model"),
+            yearTop = topValue(rows, "year"),
+            uniqueCities = countBy(rows, "city"),
+            divisor = Math.max(rows.length, 1);
+
+        requireEl("salesKpi").textContent = rows.length;
+        requireEl("cityKpi").textContent = Object.keys(uniqueCities).length + " cidade(s) com vendas";
+        requireEl("revenueKpi").textContent = formatMoneyBRL(revenue);
+        requireEl("ticketKpi").textContent = "Ticket Médio: " + formatMoneyBRL(revenue / divisor);
+        requireEl("modelKpi").textContent = modelTop[0];
+        requireEl("modelShareKpi").textContent = modelTop[1] + " venda(s) (" + formatPercent(modelTop[1] / divisor * 100) + ")";
+        requireEl("yearKpi").textContent = yearTop[0];
+        requireEl("yearShareKpi").textContent = yearTop[1] + " venda(s) (" + formatPercent(yearTop[1] / divisor * 100) + ")";
+      }
+
+      function renderSalesTable(rows) {
+        var sorted = rows.slice().sort(function(a, b){ return String(b.date || "").localeCompare(String(a.date || "")); }).slice(0, 15);
+        
+        var html = "<thead><tr>" +
+          "<th>Data</th>" +
+          "<th>Modelo</th>" +
+          "<th>Ano</th>" +
+          "<th>Localidade</th>" +
+          "<th>Pagamento</th>" +
+          "<th>Preço (R$)</th>" +
+          "<th>Status</th>" +
+        "</tr></thead><tbody>";
+
+        sorted.forEach(function(r){
+          var stClass = "status-pill";
+          if (r.status === "Entregue") stClass += " entregue";
+          else if (r.status === "Pendente") stClass += " pendente";
+          else if (r.status === "Em Trânsito") stClass += " transito";
+          else stClass += " cancelado";
+
+          html += "<tr>" +
+            "<td>" + escapeHtml(r.date || "Sem data") + "</td>" +
+            "<td><strong>" + escapeHtml(r.model) + "</strong></td>" +
+            "<td>" + escapeHtml(r.year) + "</td>" +
+            "<td>" + escapeHtml(r.city) + " (" + escapeHtml(r.state) + ")</td>" +
+            "<td>" + escapeHtml(r.pay) + "</td>" +
+            "<td>" + formatMoneyBRL(r.price) + "</td>" +
+            "<td><span class=\"" + stClass + "\">" + escapeHtml(r.status) + "</span></td>" +
+          "</tr>";
+        });
+
+        requireEl("salesTable").innerHTML = html + "</tbody>";
+      }
+
+      function renderInsights(rows) {
+        var modelTop = topValue(rows, "model"),
+            cityTop = topValue(rows, "city"),
+            payTop = topValue(rows, "pay"),
+            revenue = rows.reduce(function(s, r){ return s + r.price; }, 0),
+            avg = revenue / Math.max(rows.length, 1);
+
+        var items = [
+          ["Modelo em Destaque", modelTop[0] + " é o mais vendido com " + modelTop[1] + " unidade(s)."],
+          ["Principal Praça", cityTop[0] + " lidera com " + cityTop[1] + " veículo(s)."],
+          ["Modalidade Preferida", payTop[0] + " é a mais utilizada (" + payTop[1] + " vendas)."],
+          ["Métricas do Perfil", "Faturamento: " + formatMoneyBRL(revenue) + ". Ticket Médio: " + formatMoneyBRL(avg) + "."]
+        ];
+
+        var html = "";
+        items.forEach(function(item){
+          html += "<div class=\"insight\"><div class=\"dot\"></div><div><strong>" + escapeHtml(item[0]) + "</strong><br><span class=\"sub\">" + escapeHtml(item[1]) + "</span></div></div>";
+        });
+        requireEl("insights").innerHTML = html;
+      }
+
+      function updateDashboard() {
+        var rows = getFilteredRows();
+        renderKpis(rows);
+        renderCharts(rows);
+        renderSalesTable(rows);
+        renderInsights(rows);
+      }
+
+      updateDashboardGlobal = updateDashboard;
+
+      function clearFilters() {
+        requireEl("modelFilter").value = "";
+        requireEl("yearFilter").value = "";
+        requireEl("cityFilter").value = "";
+        requireEl("stateFilter").value = "";
+        requireEl("payFilter").value = "";
+        updateDashboard();
+      }
+
+      function init() {
+        if (typeof Chart === "undefined") return;
+        Chart.defaults.color = "#94a3b8";
+        Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
+
+        populateSelect("modelFilter", "model");
+        populateSelect("yearFilter", "year");
+        populateSelect("cityFilter", "city");
+        populateSelect("stateFilter", "state");
+        populateSelect("payFilter", "pay");
+
+        ["modelFilter", "yearFilter", "cityFilter", "stateFilter", "payFilter"].forEach(function(id){
+          requireEl(id).addEventListener("change", updateDashboard);
+        });
+
+        requireEl("clearFilters").addEventListener("click", clearFilters);
+
+        updateDashboard();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+      } else {
+        init();
+      }
+    }());
+  </script>
+</body>
+</html>
